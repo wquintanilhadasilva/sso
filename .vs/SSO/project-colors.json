@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "558de6eb-3d57-4663-8380-9536a5f4dc70": {
+      "ProjectGuid": "558de6eb-3d57-4663-8380-9536a5f4dc70",
+      "DisplayName": "SSOGateway",
+      "ColorIndex": 0
+    },
+    "c67102d7-d68d-407a-815a-8a7511547896": {
+      "ProjectGuid": "c67102d7-d68d-407a-815a-8a7511547896",
+      "DisplayName": "SSOAutenticacao",
+      "ColorIndex": 1
+    },
+    "b6851d8b-fee6-471f-ab0e-cdd99c35de71": {
+      "ProjectGuid": "b6851d8b-fee6-471f-ab0e-cdd99c35de71",
+      "DisplayName": "SSOSegurancaMicrosservice",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}
