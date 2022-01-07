@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SSOAutenticacao.Service;
 using SSOSegurancaMicrosservice.Configuration;
 using SSOSegurancaMicrosservice.Service;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SSOAutenticacao.Controllers

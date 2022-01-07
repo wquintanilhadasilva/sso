@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using SSOAutenticacao.Autenticacao;
 using SSOSegurancaMicrosservice.Configuration;
 using SSOSegurancaMicrosservice.Service;
 using System;
+using System.Threading.Tasks;
 
 namespace SSOAutenticacao.Controllers
 {
@@ -16,12 +18,14 @@ namespace SSOAutenticacao.Controllers
     {
 
         private readonly String loginSuccess;
+        private readonly String ssoLogout;
         private readonly IConfiguration Configuration;
         private readonly ISecurityCacheService _cache;
 
         public SsoController(IConfiguration configuration, ISecurityCacheService cache)
         {
             this.loginSuccess = configuration.GetValue<string>("Security:OAuth2:LoginSuccess");
+            this.ssoLogout = configuration.GetValue<string>("Security:OAuth2:LogoutUri");
             this.Configuration = configuration;
             this._cache = cache;
         }
@@ -38,7 +42,7 @@ namespace SSOAutenticacao.Controllers
 
         [HttpGet]
         [Route("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             //HttpContext.Response.Cookies.Delete("jwt-token");
             //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -57,8 +61,11 @@ namespace SSOAutenticacao.Controllers
                     Response.Cookies.Delete(cookie);
                 }
 
-                return SignOut(CookieAuthenticationDefaults.AuthenticationScheme);
-            }else
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+                return Redirect(ssoLogout);
+            }
+            else
             {
                 return Unauthorized();
             }
