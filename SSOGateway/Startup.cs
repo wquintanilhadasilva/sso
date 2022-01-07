@@ -21,7 +21,7 @@ namespace SSOGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.ConfigureAutenticacaoService(Configuration, false);
+            services.ConfigureAutenticacaoService(Configuration, true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

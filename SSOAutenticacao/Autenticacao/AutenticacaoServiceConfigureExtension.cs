@@ -77,7 +77,7 @@ namespace SSOAutenticacao.Autenticacao
                         response.EnsureSuccessStatusCode();
                         var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
                         context.RunClaimActions(json.RootElement);
-                        var roles = context.Identity.FindFirst(ClaimTypes.Role)?.Value ?? "Admin,User, XPTO";
+                        var roles = context.Identity.FindFirst(ClaimTypes.Role)?.Value;
                         var subject = context.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
                         if (roles != null)
                         {

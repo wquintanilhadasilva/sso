@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>Biblioteca para prover os recursos de autenticação (Login e Logout) utilizando um provedor SSO através do OAuth2.</Description>
   </PropertyGroup>
 
   <ItemGroup>

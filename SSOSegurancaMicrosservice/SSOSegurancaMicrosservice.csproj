@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Description>Biblioteca para uso em Microsserviços para prover o mecanismo de segurança utilizando JWT Token usando Cookie </Description>
   </PropertyGroup>
 
   <ItemGroup>

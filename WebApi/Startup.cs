@@ -27,7 +27,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.ConfigureAutenticacaoJwt(Configuration, false);
+            services.ConfigureAutenticacaoJwt(Configuration, true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
