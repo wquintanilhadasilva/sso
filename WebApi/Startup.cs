@@ -45,7 +45,7 @@ namespace WebApi
             app.UseRouting();
 
             app.UseAuthentication();
-            //app.ConfigureSecurityCacheApp();
+            app.ConfigureSecurityCacheApp();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

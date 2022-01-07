@@ -51,7 +51,13 @@ namespace SSOAutenticacao.Controllers
                     var token = Request.Cookies[SecurityConfiguration.TOKEN_NAME];
                     _cache.RemoveUserRoles(token);
                 }
-                return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, "oidc", SecurityConfiguration.TOKEN_NAME);
+                Response.Cookies.Delete(SecurityConfiguration.TOKEN_NAME);
+                foreach (var cookie in Request.Cookies.Keys)
+                {
+                    Response.Cookies.Delete(cookie);
+                }
+
+                return SignOut(CookieAuthenticationDefaults.AuthenticationScheme);
             }else
             {
                 return Unauthorized();
