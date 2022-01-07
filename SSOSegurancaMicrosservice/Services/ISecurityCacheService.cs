@@ -7,5 +7,7 @@ namespace SSOSegurancaMicrosservice.Service
     {
         Task<List<string>> GetUserRoles(string key);
         void SetUserRoles(List<string> roles, string key);
+
+        void RemoveUserRoles(string key);
     }
 }

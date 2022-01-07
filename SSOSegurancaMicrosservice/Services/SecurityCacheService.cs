@@ -16,7 +16,7 @@ namespace SSOSegurancaMicrosservice.Service
         {
             _redis = redis;
             _database = _redis.GetDatabase();
-            _SecurityCacheKey = Configuration["Security:OAuth2:ClientId"];
+            _SecurityCacheKey = Configuration["Security:Authentication:AppPrefix"];
         }
 
         public async Task<List<string>> GetUserRoles(string key)
@@ -24,6 +24,10 @@ namespace SSOSegurancaMicrosservice.Service
             var t = Task.Run(async () =>
             {
                 var profile = await _database.StringGetAsync($"{_SecurityCacheKey}-{key}");
+                if(profile.IsNullOrEmpty)
+                {
+                    return new List<string>();
+                }
                 var roles = profile.ToString().Split(',').ToList();
                 return roles;
             });
@@ -34,6 +38,11 @@ namespace SSOSegurancaMicrosservice.Service
         {
             var profile = string.Join(",", roles);
             await _database.StringSetAsync($"{_SecurityCacheKey}-{key}", profile);
+        }
+
+        public void RemoveUserRoles(string key)
+        {
+            _database.StringGetDelete($"{_SecurityCacheKey}-{key}");
         }
     }
 }

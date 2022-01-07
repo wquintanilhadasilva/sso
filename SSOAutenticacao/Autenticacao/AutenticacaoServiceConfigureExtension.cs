@@ -18,7 +18,7 @@ namespace SSOAutenticacao.Autenticacao
     public static class AutenticacaoServiceConfigureExtension
     {
 
-        public static void ConfigureAutenticacaoService(this IServiceCollection services, IConfiguration Configuration, bool UseRedis = true)
+        public static void ConfigureAutenticacaoService(this IServiceCollection services, IConfiguration Configuration, bool UseRedis = false)
         {            
             ConfigureOAuth(services, Configuration);
             if (UseRedis)
@@ -66,7 +66,6 @@ namespace SSOAutenticacao.Autenticacao
                 {
                     OnCreatingTicket = async context =>
                     {
-
                         var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
                         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
@@ -80,7 +79,7 @@ namespace SSOAutenticacao.Autenticacao
                         {
                             foreach (var claim in Regex.Replace(roles, @"[\[\s\]\""]+", "").Split(","))
                             {
-                                context.Identity.AddClaim(new Claim(ClaimTypes.Role, claim));
+                                context.Identity.AddClaim(new Claim(ClaimTypes.Role, claim.Trim()));
                             }
                         }
                     },

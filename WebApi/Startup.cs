@@ -1,12 +1,18 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SSOAutenticacao.Autenticacao;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using SSOSegurancaMicrosservice.Autenticacao;
 
-namespace SSOGateway
+namespace WebApi
 {
     public class Startup
     {
@@ -21,7 +27,7 @@ namespace SSOGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.ConfigureAutenticacaoService(Configuration, true);
+            services.ConfigureAutenticacaoJwt(Configuration, false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,12 +38,14 @@ namespace SSOGateway
                 app.UseDeveloperExceptionPage();
             }
 
+            app.ConfigureSecurityApp();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthentication();
-            app.ConfigureSecurityApp();
+            //app.ConfigureSecurityCacheApp();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

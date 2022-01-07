@@ -1,30 +1,42 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using SSOAutenticacao.Service;
+using SSOSegurancaMicrosservice.Configuration;
+using SSOSegurancaMicrosservice.Service;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 
 namespace SSOAutenticacao.Autenticacao
 {
     internal class AuthenticationHandler
     {
-        public static void Authenticated(HttpResponse Response, ClaimsPrincipal User, IConfiguration configuration)
+        public static void Authenticated(HttpResponse Response, 
+            ClaimsPrincipal User, IConfiguration configuration, 
+            ISecurityCacheService cache)
         {
-            var userProfile = ProfileService.BuildUserProfile(User);
 
             // Gera o JWT Token para ser usado nas requisições às API's
-            var tokenService = new TokenService(configuration);
+            var tokenService = new TokenService(configuration, cache);
 
-            var jwtToken = tokenService.GenerateToken(userProfile);
+            int MaxAge;
+            
+            var bsuccess = int.TryParse(configuration["Security:Authentication:Jwt:MaxAge"], out MaxAge);
 
-            Response.Cookies.Append("jwt-token", jwtToken, new CookieOptions()
+            if (!bsuccess)
+            {
+                MaxAge = 60; // padrão de 60 minutos caso não seja definido
+            }
+
+            var userProfile = ProfileService.BuildUserProfile(User, cache);
+
+            var jwtToken = tokenService.GenerateToken(userProfile, MaxAge);
+
+            Response.Cookies.Append(SecurityConfiguration.TOKEN_NAME, jwtToken, new CookieOptions()
             {
                 Path = "/",
                 Secure = false,
                 HttpOnly = true,
-                MaxAge = TimeSpan.FromMinutes(60), //Obter a duração do token gerado pelo SSO
+                MaxAge = TimeSpan.FromMinutes(MaxAge),
                 //SameSite = SameSiteMode.Lax // CSRF-TOKEN
             });
 

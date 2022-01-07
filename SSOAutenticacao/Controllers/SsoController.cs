@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SSOAutenticacao.Autenticacao;
+using SSOSegurancaMicrosservice.Configuration;
+using SSOSegurancaMicrosservice.Service;
 using System;
 
 namespace SSOAutenticacao.Controllers
@@ -15,11 +17,13 @@ namespace SSOAutenticacao.Controllers
 
         private readonly String loginSuccess;
         private readonly IConfiguration Configuration;
+        private readonly ISecurityCacheService _cache;
 
-        public SsoController(IConfiguration configuration)
+        public SsoController(IConfiguration configuration, ISecurityCacheService cache)
         {
             this.loginSuccess = configuration.GetValue<string>("Security:OAuth2:LoginSuccess");
             this.Configuration = configuration;
+            this._cache = cache;
         }
 
         [HttpGet]
@@ -28,7 +32,7 @@ namespace SSOAutenticacao.Controllers
         public IActionResult Get()
         {
             // Chegar aqui, gera o jwt-token no cookie para a aplicação client
-            AuthenticationHandler.Authenticated(Response, User, Configuration);
+            AuthenticationHandler.Authenticated(Response, User, Configuration, _cache);
             return Redirect(loginSuccess);
         }
 
@@ -40,7 +44,12 @@ namespace SSOAutenticacao.Controllers
             //HttpContext.Response.Cookies.Delete("jwt-token");
             //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             // Após logout no SSO, faz logout na aplicação
-            return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, "oidc", "jwt-token");
+            if(_cache != null)
+            {
+                var token = Request.Cookies[SecurityConfiguration.TOKEN_NAME];
+                _cache.RemoveUserRoles(token);
+            }
+            return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, "oidc", SecurityConfiguration.TOKEN_NAME);
         }
     }
 }
