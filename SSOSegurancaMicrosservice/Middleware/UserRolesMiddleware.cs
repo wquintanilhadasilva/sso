@@ -23,7 +23,7 @@ namespace SSOSegurancaMicrosservice.Middleware
         public async Task InvokeAsync(HttpContext httpContext)
         {
             // Se informar o cache, recupera dele as claims do usuário e adiciona ao perfil
-            if(_cache != null)
+            if(_cache != null && !_cache.IsDefault)
             {
                 if (httpContext.User != null)
                 {

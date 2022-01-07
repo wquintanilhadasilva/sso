@@ -13,6 +13,8 @@ namespace SSOSegurancaMicrosservice.Services
         private string _SecurityCacheKey;
         private readonly Dictionary<string, string> _cache = new Dictionary<string, string>();
 
+        public bool IsDefault => true;
+
         public DefaultSecurityCacheService(IConfiguration Configuration)
         {
             _SecurityCacheKey = Configuration["Security:Authentication:AppPrefix"];

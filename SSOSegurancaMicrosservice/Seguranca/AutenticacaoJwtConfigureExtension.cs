@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using SSOSegurancaMicrosservice.Configuration;
 using SSOSegurancaMicrosservice.Middleware;
 using SSOSegurancaMicrosservice.Service;
+using SSOSegurancaMicrosservice.Services;
 using StackExchange.Redis;
 using System;
 using System.Text;
@@ -29,8 +29,6 @@ namespace SSOSegurancaMicrosservice.Autenticacao
 
             services.AddAuthentication(options =>
             {
-                //options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                //options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
@@ -40,6 +38,9 @@ namespace SSOSegurancaMicrosservice.Autenticacao
             if (UseRedis)
             {
                 services.ConfigureRedis(Configuration);
+            } else
+            {
+                services.ConfigureDefault(Configuration);
             }
         }
 
@@ -70,7 +71,6 @@ namespace SSOSegurancaMicrosservice.Autenticacao
 
         public static void ConfigureRedis(this IServiceCollection services, IConfiguration Configuration)
         {
-            //Configure other services up here
             var stringConexao = Configuration["RedisConnectionString"];
             if(stringConexao == null)
             {
@@ -78,18 +78,21 @@ namespace SSOSegurancaMicrosservice.Autenticacao
             }
             var multiplexer = ConnectionMultiplexer.Connect(stringConexao);
             services.AddSingleton<IConnectionMultiplexer>(multiplexer);
-            services.AddSingleton<ISecurityCacheService, SecurityCacheService>();
+            services.AddSingleton<ISecurityCacheService, RedisSecurityCacheService>();
+        }
+
+        public static void ConfigureDefault(this IServiceCollection services, IConfiguration Configuration)
+        {
+            services.AddSingleton<ISecurityCacheService, DefaultSecurityCacheService>();
         }
 
         /// <summary>
         /// Configura o middlware para obter as permissões do cache no REDIS
         /// </summary>
         /// <param name="app">Referência de IApplicationBuilder</param>
-        /// <param name="UseRedis">Define se utiliza o Redis como cache de Roles. Valor padrão é FALSE</param>
         public static void ConfigureSecurityApp(this IApplicationBuilder app)
         {
-            app.UseMiddleware<JWTInHeaderMiddleware>();
-          
+            app.UseMiddleware<JWTInHeaderMiddleware>();          
         }
 
         public static void ConfigureSecurityCacheApp(this IApplicationBuilder app)

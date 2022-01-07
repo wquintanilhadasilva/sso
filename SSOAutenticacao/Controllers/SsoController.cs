@@ -38,18 +38,25 @@ namespace SSOAutenticacao.Controllers
 
         [HttpGet]
         [Route("logout")]
-        [Authorize]
         public IActionResult Logout()
         {
             //HttpContext.Response.Cookies.Delete("jwt-token");
             //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             // Após logout no SSO, faz logout na aplicação
-            if(_cache != null)
+
+            if (User.Identity.IsAuthenticated)
             {
-                var token = Request.Cookies[SecurityConfiguration.TOKEN_NAME];
-                _cache.RemoveUserRoles(token);
+                if (_cache != null && !_cache.IsDefault)
+                {
+                    var token = Request.Cookies[SecurityConfiguration.TOKEN_NAME];
+                    _cache.RemoveUserRoles(token);
+                }
+                return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, "oidc", SecurityConfiguration.TOKEN_NAME);
+            }else
+            {
+                return Unauthorized();
             }
-            return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, "oidc", SecurityConfiguration.TOKEN_NAME);
+            
         }
     }
 }

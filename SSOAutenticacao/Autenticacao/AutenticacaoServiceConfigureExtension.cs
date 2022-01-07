@@ -21,9 +21,13 @@ namespace SSOAutenticacao.Autenticacao
         public static void ConfigureAutenticacaoService(this IServiceCollection services, IConfiguration Configuration, bool UseRedis = false)
         {            
             ConfigureOAuth(services, Configuration);
+
             if (UseRedis)
             {
                 services.ConfigureRedis(Configuration);
+            }else
+            {
+                services.ConfigureDefault(Configuration);
             }
         }
 

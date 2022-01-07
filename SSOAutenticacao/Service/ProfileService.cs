@@ -32,7 +32,7 @@ namespace SSOAutenticacao.Service
             }
 
             List<string> roles = new List<string>();
-            if(cache != null && token != null)
+            if(cache != null && !cache.IsDefault && token != null)
             {
                 roles = cache.GetUserRoles(token).Result;
             }else

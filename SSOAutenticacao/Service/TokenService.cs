@@ -27,7 +27,7 @@ namespace SSOAutenticacao.Service
             
             string token;
             // Se tiver a referencia do cache, grava as roles no cache e não no token
-            if (_cache != null)
+            if (_cache != null && !_cache.IsDefault)
             {
                 List<string> roles = new List<string>(user.Role);
 
