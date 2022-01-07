@@ -31,13 +31,14 @@ namespace SSOGateway
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.ConfigureSecurityApp();
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthentication();
-            app.ConfigureSecurityApp();
+            app.ConfigureSecurityCacheApp();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
