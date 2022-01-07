@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using SSOAutenticacao.Configuration;
-using SSOSegurancaMicrosservice.Service;
-using StackExchange.Redis;
+using SSOSegurancaMicrosservice.Autenticacao;
+using SSOSegurancaMicrosservice.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -25,7 +23,7 @@ namespace SSOAutenticacao.Autenticacao
             ConfigureOAuth(services, Configuration);
             if (UseRedis)
             {
-                ConfigureRedis(services, Configuration);
+                services.ConfigureRedis(Configuration);
             }
         }
 
@@ -44,18 +42,7 @@ namespace SSOAutenticacao.Autenticacao
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
             })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            })
+            .ConfigureJwt(Configuration)
             .AddCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -99,14 +86,6 @@ namespace SSOAutenticacao.Autenticacao
                     },
                 };
             });
-        }
-
-        private static void ConfigureRedis(IServiceCollection services, IConfiguration Configuration)
-        {
-            //Configure other services up here
-            var multiplexer = ConnectionMultiplexer.Connect(Configuration["RedisConnectionString"]);
-            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
-            services.AddSingleton<ISecurityCacheService, SecurityCacheService>();            
         }
 
     }

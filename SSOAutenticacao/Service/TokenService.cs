@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using SSOAutenticacao.Configuration;
 using SSOAutenticacao.Models;
+using SSOSegurancaMicrosservice.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
