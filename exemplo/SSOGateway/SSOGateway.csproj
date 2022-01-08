@@ -2,16 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>a331a02a-d07f-44ed-b375-9653e61038e9</UserSecretsId>
+    <UserSecretsId>0e1fa09c-76f6-47b6-b011-54c8b726c671</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="SSOAutenticacao" Version="1.0.0" />
+    <PackageReference Include="SSOSegurancaMicrosservice" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SSOSegurancaMicrosservice\SSOSegurancaMicrosservice.csproj" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 
