@@ -91,10 +91,10 @@ No projeto `Gateway`, acrescente as seguintes propriedades:
     "Secret": "LxmWVVNofRNAVHuQ",
     "UserAuthenticationUri": "/cas/login",
     "LoginSuccess": "http://localhost:4200/#/login-success",
-    "UserAuthorizationUri": "https://sso.tst.inmetro.basis.com.br/cas/oauth2.0/authorize",
-    "AccessTokenUri": "https://sso.tst.inmetro.basis.com.br/cas/oauth2.0/accessToken",
-    "UserInfoUri": "https://sso.tst.inmetro.basis.com.br/cas/oauth2.0/profile",
-    "LogoutUri": "https://sso.tst.inmetro.basis.com.br/cas/logout"
+    "UserAuthorizationUri": "https://sso.tst.xpto.com.br/cas/oauth2.0/authorize",
+    "AccessTokenUri": "https://sso.tst.xpto.com.br/cas/oauth2.0/accessToken",
+    "UserInfoUri": "https://sso.tst.xpto.com.br/cas/oauth2.0/profile",
+    "LogoutUri": "https://sso.tst.xpto.com.br/cas/logout"
   },
   "Authentication": {
     "AppPrefix": "MicroService1",
