@@ -69,7 +69,6 @@ dotnet add package SSOAutenticacao
 2 - ou abrir o arquivo `.csproj` e adicionar as referências manualmente:
 ```
 <PackageReference Include="SSOAutenticacao" Version="1.0.0" />
-<PackageReference Include="SSOSegurancaMicrosservice" Version="1.0.0" />
 ```
 3 - Ou adicionar a interface do Nuget Package
 
