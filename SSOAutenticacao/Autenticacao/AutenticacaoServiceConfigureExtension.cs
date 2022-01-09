@@ -5,11 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SSOSegurancaMicrosservice.Autenticacao;
-using SSOSegurancaMicrosservice.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -33,11 +31,6 @@ namespace SSOAutenticacao.Autenticacao
 
         private static void ConfigureOAuth(IServiceCollection services, IConfiguration Configuration)
         {
-            // Ajusta as rotas para lowercase
-            //services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-
-            var secret = Configuration[SecurityConfiguration.SECRET_KEY_CONFIG];
-            var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddAuthentication(options =>
             {

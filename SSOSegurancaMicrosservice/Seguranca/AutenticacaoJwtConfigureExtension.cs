@@ -19,14 +19,6 @@ namespace SSOSegurancaMicrosservice.Autenticacao
 
         public static void ConfigureAutenticacaoJwt(this IServiceCollection services, IConfiguration Configuration, bool UseRedis = false)
         {
-            var secret = Configuration[SecurityConfiguration.SECRET_KEY_CONFIG];
-            if(secret == null)
-            {
-                throw new SecurityTokenInvalidSigningKeyException($"Chave do Token não informada em [{SecurityConfiguration.SECRET_KEY_CONFIG}].");
-            }
-
-            var key = Encoding.ASCII.GetBytes(secret);
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
