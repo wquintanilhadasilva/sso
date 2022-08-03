@@ -50,7 +50,7 @@ namespace SSOAutenticacao.Service
 
             var claimsList = new List<Claim>();
             claimsList.Add(new Claim(ClaimTypes.Name, user.Name));
-            claimsList.Add(new Claim(ClaimTypes.AuthenticationMethod, user.Provider));
+            claimsList.Add(new Claim("sub", user.Name));
 
             foreach (var role in user.Role)
             {

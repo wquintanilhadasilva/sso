@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>Biblioteca para prover os recursos de autenticação (Login e Logout) utilizando um provedor SSO através do OAuth2.</Description>
+    <Version>1.2.4</Version>
+    <Company>Basis Tecnologia SA</Company>
+    <Authors>Basis Tecnologia SA</Authors>
   </PropertyGroup>
 
   <ItemGroup>

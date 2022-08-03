@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace SSOAutenticacao.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class SsoController : ControllerBase
@@ -32,7 +31,7 @@ namespace SSOAutenticacao.Controllers
 
         [HttpGet]
         [Route("login")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "oidc")]
         public IActionResult Get()
         {
             // Chegar aqui, gera o jwt-token no cookie para a aplicação client
@@ -44,31 +43,22 @@ namespace SSOAutenticacao.Controllers
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {
-            //HttpContext.Response.Cookies.Delete("jwt-token");
-            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            // Após logout no SSO, faz logout na aplicação
 
-            if (User.Identity.IsAuthenticated)
+            var prop = new AuthenticationProperties()
             {
-                if (_cache != null && !_cache.IsDefault)
-                {
-                    var token = Request.Cookies[SecurityConfiguration.TOKEN_NAME];
-                    _cache.RemoveUserRoles(token);
-                }
-                Response.Cookies.Delete(SecurityConfiguration.TOKEN_NAME);
-                foreach (var cookie in Request.Cookies.Keys)
-                {
-                    Response.Cookies.Delete(cookie);
-                }
+                RedirectUri = ssoLogout
+            };
 
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(prop);
 
-                return Redirect(ssoLogout);
-            }
-            else
+            foreach (var cookie in Request.Cookies.Keys)
             {
-                return Unauthorized();
+                Response.Cookies.Delete(cookie);
             }
+
+            return Redirect(ssoLogout);
+
+
             
         }
     }

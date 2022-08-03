@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SSOAutenticacao.Service;
 using SSOSegurancaMicrosservice.Configuration;
@@ -25,8 +25,6 @@ namespace SSOAutenticacao.Controllers
         [Authorize]
         public async Task<IActionResult> Details()
         {
-            // Obtem o token do SSO
-            //var token = await HttpContext.GetTokenAsync("access_token");
             var token = Request.Cookies[SecurityConfiguration.TOKEN_NAME];
 
             var t = Task.Run(() => {

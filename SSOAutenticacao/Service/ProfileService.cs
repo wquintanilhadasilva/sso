@@ -1,4 +1,4 @@
-﻿using SSOAutenticacao.Models;
+using SSOAutenticacao.Models;
 using SSOSegurancaMicrosservice.Service;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -24,8 +24,6 @@ namespace SSOAutenticacao.Service
         public static UserProfile BuildUserProfile(ClaimsPrincipal Principal, ISecurityCacheService cache, string token = null)
         {
 
-            // Obtem o token do SSO
-            //var token = await HttpContext.GetTokenAsync("access_token");
             if(Principal == null)
             {
                 return new UserProfile();

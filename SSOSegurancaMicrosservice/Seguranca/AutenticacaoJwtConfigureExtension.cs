@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +10,9 @@ using SSOSegurancaMicrosservice.Service;
 using SSOSegurancaMicrosservice.Services;
 using StackExchange.Redis;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Security.Claims;
 
 namespace SSOSegurancaMicrosservice.Autenticacao
 {
@@ -54,7 +56,8 @@ namespace SSOSegurancaMicrosservice.Autenticacao
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    NameClaimType = "sub"
                 };
             });
 

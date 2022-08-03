@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+	<PackageId>$(AssemblyName)</PackageId>
+	<Version>1.2.4</Version>
+	<Authors>Basis Tecnologia SA</Authors>
+	<Company>Basis Tecnologia SA</Company>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Description>Biblioteca para uso em Microsserviços para prover o mecanismo de segurança utilizando JWT Token usando Cookie </Description>
   </PropertyGroup>
